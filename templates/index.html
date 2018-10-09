@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Subreddit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="static/css/style.css"> -->
+</head>
+
+<body>
+  <div class="wrapper">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">Subreddit</a>
+            
+        </div>
+      </div>
+    </nav>
+    <div class="hero text-center">
+      <h1>SUBREDDITS</h1>
+      <p></p>
+    </div>
+    <div class="container">
+      <div class="row margin-top-50">
+        <div class="col-md-2">
+          <aside class="filters">
+            <div class="panel panel-default">
+              <div class="panel-heading">Filter Search</div>
+              <div class="panel-body">
+                <form action="#">
+                  <div class="form-group">
+                    <ul class="list-group" id="filters">
+                      <li class="filter list-group-item">
+                        <label for="subreddit">Subreddit</label>
+                        <input type="text" class="form-control" id="subreddit" placeholder="">
+                      </li>
+                      <li class="filter list-group-item">
+                        <label for="topic">Toxic Topic</label>
+                        <select id="topic">
+                          <option value=""></option>
+                          <option value="toxic">Toxic</option>
+                          <option value="severe">Severe</option>
+                          <option value="obscene">Obscene</option>
+                          <option value="threat">Threat</option>
+                          <option value="insult">Insult</option>
+                          <option value="identity">Identity Hate</option>
+                        </select>
+                        <!-- input class="form-control" id="topic" type="text" placeholder=""> -->
+                      </li>
+                    </ul>
+                  </div>
+                  <button id="filter-btn" type="submit" class="btn btn-default">Submit</button>
+                </form>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="col-md-10">
+          <div id="table-area" class="">
+            <table id="subreddit-table" class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="table-head">Date</th>
+                  <th class="table-head">Username</th>
+                  <th class="table-head">Score</th>
+                  <th class="table-head">Comments</th>
+                  <th class="table-head">Title</th>
+                  <th class="table-head">Probability</th>
+                  <th class="table-head">Sentiment</th>
+                </tr>
+              </thead>
+                <tbody>
+                {% for data in reddit_data %}
+                  <tr>
+                    <td>{{data.Date}}</td>
+                    <td>{{data.Username}}</td>
+                    <td>{{data.Score}}</td>
+                    <td>{{data.Comment}}</td>
+                    <td>{{data["Submission Title"]}}</td>
+                    <td>{{data["Toxic Prediction Probability"]}}</td>
+                    <td>{{data.Sentiment}}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <span class="bottom">Subreddit</span>
+    </footer>
+  </div>
+</body>
+
+</html>
