@@ -7,11 +7,6 @@ from flask import Flask, render_template, jsonify, request, redirect
 app = Flask(__name__)
 app.config["MONGO_URI"] = 'mongodb://jdouangs:spunky33@ds125453.mlab.com:25453/redditanalysis'
 mongo = PyMongo(app)
-#conn = MongoClient("ds125453.mlab.com", 25453)
-#db = conn["redditanalysis"]
-#client = pymongo.MongoClient(conn)
-#db.authenticate('jdouangs', 'spunky33')
-#db = client.redditanalysis
 
 @app.route("/")
 def home():

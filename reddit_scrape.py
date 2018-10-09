@@ -49,7 +49,7 @@ def scrape(choice):
     df = pd.DataFrame(columns=['Date', 'Username', 'Score', 'Comment', 'Submission Title', 'Link'])
     subreddit = reddit.subreddit(choice.lower())
     i = 1
-    for submission in subreddit.hot(limit=3):
+    for submission in subreddit.hot(limit=5):
         if "megathread".lower() not in submission.title.lower():
             submission.comments.replace_more(limit=None)
             for comment in submission.comments.list():
@@ -79,24 +79,24 @@ def scrape(choice):
 
     for index, row in df.iterrows():
         toxic.append(toxic_model.predict(toxic_vect.transform(pd.Series(row['Comment'])))[0])
-        toxic_predict_prob.append(np.max(toxic_model.predict_proba(toxic_vect.transform(pd.Series(row['Comment'])))[0]))
+        toxic_predict_prob.append(round(np.max(toxic_model.predict_proba(toxic_vect.transform(pd.Series(row['Comment'])))[0]),4))
         
         severe_toxic.append(severetoxic_model.predict(severetoxic_vect.transform(pd.Series(row['Comment'])))[0])
-        severe_toxic_predict_prob.append(np.max(severetoxic_model.predict_proba(severetoxic_vect.transform(pd.Series(row['Comment'])))[0]))
+        severe_toxic_predict_prob.append(round(np.max(severetoxic_model.predict_proba(severetoxic_vect.transform(pd.Series(row['Comment'])))[0]),4))
         
         obscene.append(obscene_model.predict(obscene_vect.transform(pd.Series(row['Comment'])))[0])
-        obscene_predict_prob.append(np.max(obscene_model.predict_proba(obscene_vect.transform(pd.Series(row['Comment'])))[0]))
+        obscene_predict_prob.append(round(np.max(obscene_model.predict_proba(obscene_vect.transform(pd.Series(row['Comment'])))[0]),4))
         
         threat.append(threat_model.predict(threat_vect.transform(pd.Series(row['Comment'])))[0])
-        threat_predict_prob.append(np.max(threat_model.predict_proba(threat_vect.transform(pd.Series(row['Comment'])))[0]))
+        threat_predict_prob.append(round(np.max(threat_model.predict_proba(threat_vect.transform(pd.Series(row['Comment'])))[0]),4))
         
         insult.append(insult_model.predict(insult_vect.transform(pd.Series(row['Comment'])))[0])
-        insult_predict_prob.append(np.max(insult_model.predict_proba(insult_vect.transform(pd.Series(row['Comment'])))[0]))
+        insult_predict_prob.append(round(np.max(insult_model.predict_proba(insult_vect.transform(pd.Series(row['Comment'])))[0]),4))
         
         identity_hate.append(identityhate_model.predict(identityhate_vect.transform(pd.Series(row['Comment'])))[0])
-        identity_hate_predict_prob.append(np.max(identityhate_model.predict_proba(identityhate_vect.transform(pd.Series(row['Comment'])))[0]))
+        identity_hate_predict_prob.append(round(np.max(identityhate_model.predict_proba(identityhate_vect.transform(pd.Series(row['Comment'])))[0]),4))
         
-        sentiment.append(detect_sentiment(row['Comment']))
+        sentiment.append(round(detect_sentiment(row['Comment']),3))
         
     df['Toxic Prediction'] = toxic
     df["Toxic Prediction Probability"] = toxic_predict_prob
