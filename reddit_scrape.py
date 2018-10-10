@@ -145,17 +145,4 @@ def scrape(choice):
         insult_only.to_dict('records'),
         identityhate_only.to_dict('records')
     ]
-
-    #keys = {0 : 'master', 
-    #1 : 'toxic', 
-    #2 : 'severe',
-    #3 : 'obscene',
-    #4 : 'threat',
-    #5 : 'insult',
-    #6 : 'identity'}
-
-    ## Keys: 0 - Master, 1 - Toxic, 2 - Severe, 3 - Obscene, 4 - Threat, 5 - Insult, 6 - Identity
-    #for x in range(len(df_array)):
-        #with open(keys[x] + '_dict.txt', 'w') as file:
-            #file.write(json.dumps(df_array[x]))
     return df_array

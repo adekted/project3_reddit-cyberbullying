@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link rel="stylesheet" href="static/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
@@ -15,8 +18,8 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.html">Detoxify Reddit</a>
-            
+          <a class="navbar-brand" href="index.html">Detoxify</a>
+          <a class="navbar-brand" href="index.html">Total {{filter_text}} Comments: {{comment_length}} </a>
         </div>
       </div>
     </nav>
@@ -31,30 +34,36 @@
             <div class="panel panel-default">
               <div class="panel-heading">Filter Search</div>
               <div class="panel-body">
-                <form action="#">
-                  <div class="form-group">
-                    <ul class="list-group" id="filters">
-                      <li class="filter list-group-item">
-                        <label for="subreddit">Subreddit</label>
-                        <input type="text" class="form-control" id="subreddit" placeholder="">
-                      </li>
-                      <li class="filter list-group-item">
-                        <label for="topic">Toxic Topic</label>
-                        <select id="topic">
-                          <option value=""></option>
-                          <option value="toxic">Toxic</option>
-                          <option value="severe">Severe</option>
-                          <option value="obscene">Obscene</option>
-                          <option value="threat">Threat</option>
-                          <option value="insult">Insult</option>
-                          <option value="identity">Identity Hate</option>
-                        </select>
-                        <!-- input class="form-control" id="topic" type="text" placeholder=""> -->
-                      </li>
-                    </ul>
-                  </div>
-                  <button id="filter-btn" type="submit" class="btn btn-default">Submit</button>
-                </form>
+                  <form action="{{url_for('scrape')}}" method="post">
+                      <div class="form-group">
+                        <ul class="list-group" id="filter1">
+                          <li class="filter list-group-item">
+                            <label for="subreddit">Subreddit</label>
+                            <input type="text" class="form-control" id="subreddit" placeholder="" name="subreddit-scrape">
+                          </li>
+                        </ul>
+                      </div>
+                      <button id="filter-btn" type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                    <form action="{{url_for('home')}}" method="post">
+                      <div class="form-group">
+                          <ul class="list-group" id="filter2">
+                            <li class="filter list-group-item">
+                              <label for="topic">Toxic Topic</label>
+                              <select id="topic" name="toxic-filter">
+                                <option value="">All</option>
+                                <option value="Toxic">Toxic</option>
+                                <option value="Severe Toxic">Severe Toxic</option>
+                                <option value="Obscene">Obscene</option>
+                                <option value="Threat">Threat</option>
+                                <option value="Insult">Insult</option>
+                                <option value="Identity Hate">Identity Hate</option>
+                              </select>
+                            </li>
+                          </ul>
+                        </div>
+                        <button id="filter-btn" type="submit" class="btn btn-default">Submit</button>
+                      </form>
               </div>
             </div>
           </aside>
@@ -81,8 +90,8 @@
                     <td>{{data.Score}}</td>
                     <td>{{data.Comment}}</td>
                     <td>{{data["Submission Title"]}}</td>
-                    <td>{{data["Toxic Prediction Probability"]}}</td>
-                    <td>{{data.Sentiment}}</td>
+                    <td class = "probability">{{data[parameter + " Probability"]}}</td>
+                    <td class = "sentiment">{{data.Sentiment}}</td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -91,10 +100,39 @@
         </div>
       </div>
     </div>
+    <div class = "row">
+        <div class = "col-md-12">
+            <div id="myDiv"></div>
+        </div>
+      </div>
     <footer class="footer">
       <span class="bottom">Subreddit</span>
     </footer>
   </div>
+  <script type = "text/javascript">
+    // API key
+  const API_KEY = "pk.eyJ1IjoibHJheW5lcyIsImEiOiJjamt1Z29mNWkwNHprM3NxMmxpbzMwcjg4In0.9AyDbhEwMh3kAJsRiN3I-Q";
+  console.log(API_KEY)
+  </script>
+  <script type = "text/javascript">
+  var x = [];
+  var sentiment = document.getElementsByClassName("sentiment")
+  for (var i = 0; i < sentiment.length; i ++) {
+    x.push(sentiment[i].innerHTML)
+  }
+  console.log(x)
+  var trace = {
+      x: x,
+      type: 'histogram',
+    };
+  var data = [trace];
+  var layout = {
+    title: "Distribution of Comment Sentiment",
+    showlegend: true
+  }
+  Plotly.newPlot('myDiv', data, layout);
+  </script>
+  <!-- <script type="text/javascript" src="static/js/config.js"></script>
+  <script type="text/javascript" src="static/js/histogram.js"></script> -->
 </body>
-
 </html>
