@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-  <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="../static/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -72,19 +72,19 @@
           <div id="table-area" class="">
             <table id="subreddit-table" class="table table-striped">
               <thead>
-                <tr>
+                <tr style="font-size: 1.1em">
                   <th class="table-head">Date</th>
                   <th class="table-head">Username</th>
                   <th class="table-head">Score</th>
-                  <th class="table-head">Comments</th>
+                  <th class="table-head" width="20%">Comments</th>
                   <th class="table-head">Title</th>
-                  <th class="table-head">Probability</th>
+                  <th class="table-head" width="10%">Probability</th>
                   <th class="table-head">Sentiment</th>
                 </tr>
               </thead>
                 <tbody>
                 {% for data in reddit_data %}
-                  <tr>
+                  <tr style="font-size: 1.1em">
                     <td>{{data.Date}}</td>
                     <td>{{data.Username}}</td>
                     <td>{{data.Score}}</td>
@@ -101,9 +101,12 @@
       </div>
     </div>
     <div class = "row">
-        <div class = "col-md-12">
+        <div class = col-md-2></div>
+        <div class = "col-md-8">
             <div id="myDiv"></div>
+            <div id="scatterplotDiv"></div>
         </div>
+        <div class = col-md-2></div>
       </div>
     <footer class="footer">
       <span class="bottom">Subreddit</span>
@@ -115,23 +118,59 @@
   console.log(API_KEY)
   </script>
   <script type = "text/javascript">
-  var x = [];
-  var sentiment = document.getElementsByClassName("sentiment")
-  for (var i = 0; i < sentiment.length; i ++) {
-    x.push(sentiment[i].innerHTML)
-  }
-  console.log(x)
-  var trace = {
-      x: x,
-      type: 'histogram',
-    };
-  var data = [trace];
-  var layout = {
-    title: "Distribution of Comment Sentiment",
-    showlegend: true
-  }
-  Plotly.newPlot('myDiv', data, layout);
-  </script>
+    var x = [];
+    var y = [];
+    var sentiment = document.getElementsByClassName("sentiment")
+    var probability = document.getElementsByClassName("probability")
+    for (var i = 0; i < sentiment.length; i ++) {
+      x.push(sentiment[i].innerHTML)
+    }
+  
+      for (var i = 0; i < probability.length; i ++) {
+      y.push(probability[i].innerHTML)
+    }
+    console.log(x)
+    console.log(y)
+  
+    // Histogram
+    var trace = {
+        x: x,
+        type: 'histogram',
+      };
+    var data = [trace];
+    var layout = {
+      title: "Distribution of Comment Sentiment",
+      showlegend: false
+    }
+    Plotly.newPlot('myDiv', data, layout);
+  
+  // Scatterplot
+    var trace1 = {
+    x: x,
+    y: y,
+    mode: 'markers',
+    type: 'scatter',
+    marker: { size: 12 }
+  };
+  
+  
+  var scatterdata = [ trace1 ];
+  
+  var scatterlayout = {
+    xaxis: {
+      range: [ -1.5, 1.5 ],
+      title: "Sentiment"
+    },
+    yaxis: {
+      range: [0, 1.5],
+      title: "Probability"
+    },
+    title:'Sentiment vs. Probability'
+  };
+  
+  Plotly.newPlot('scatterplotDiv', scatterdata, scatterlayout);
+    </script>
+    </script>
   <!-- <script type="text/javascript" src="static/js/config.js"></script>
   <script type="text/javascript" src="static/js/histogram.js"></script> -->
 </body>
