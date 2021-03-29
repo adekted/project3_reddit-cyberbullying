@@ -122,7 +122,7 @@ pycrypto==2.6.1
 pycurl==7.43.0.1
 pydotplus==2.0.2
 pyflakes==1.6.0
-Pygments==2.2.0
+Pygments==2.7.4
 pylint==1.8.2
 pymongo==3.7.1
 pyOpenSSL==17.5.0
